@@ -1,7 +1,7 @@
 const ProxyDb = require('./config/connector/ProxyDB');
 
 class Tournament {
-    constructor(name, date, location, _id) {
+    constructor(location, availablePlaces, reservedPlaces, participants, startDate, description, status, tournamentHistory, _id) {
         this.location = location,
         this.availablePlaces = availablePlaces, 
         this.reservedPlaces = reservedPlaces,
@@ -50,3 +50,5 @@ class Tournament {
         return new Tournament(map.location, map.availablePlaces, map.reservedPlaces, map.participants, map.startDate, map.description, map.status, map.tournamentHistory, map._id);
     }
 }
+
+module.exports = Tournament;
