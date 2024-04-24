@@ -2,10 +2,7 @@ const Admin = require("../models/admin");
 const adminUtils = require("../utils/admin");
 const ErrorHandler = require("../models/errorHandler");
 const bcrypt = require("bcrypt");
-const nodemailer = require("nodemailer");
-const hbs = require("nodemailer-express-handlebars");
 const path = require("path");
-const logoPath = path.join(__dirname, "../assets/csb_logo_letter.png");
 const jwt = require("jsonwebtoken");
 
 exports.createAdmin = async (req, res, next) => {
@@ -84,48 +81,11 @@ exports.forgetPassword = async (req, res, next) => {
       "1h"
     );
     await Admin.updateForgetPasswordToken(admin._id, forgetPasswordToken);
-    const handlebarOptions = {
-      viewEngine: {
-        partialsDir: path.resolve("./views/"),
-        defaultLayout: false,
-      },
-      viewPath: path.resolve("./views/"),
-    };
-
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: { user: process.env.EMAIL, pass: process.env.PASSWORD },
-    });
-    const mailOptions = {
-      from: process.env.EMAIL,
-      to: req.body.email,
-      subject: "Réinitialisation de mot de passe",
-      template: "forgetPasswordTemplate",
-      context: {
-        firstName: admin.firstName,
-        lastName: admin.lastName,
-        link: `${req.protocol}://${process.env.FRONT_HOST}/admin/forget-password/${admin._id}/${forgetPasswordToken}`,
-      },
-      attachments: [
-        {
-          filename: "csb_logo_letter.png",
-          path: logoPath,
-          cid: "Logo",
-        },
-      ],
-    };
-    transporter.use("compile", hbs(handlebarOptions));
-    try {
-      await transporter.sendMail(mailOptions);
-    } catch (err) {
-      throw {
-        status: 500,
-        message: {
-          error: "NODEMAILER_ERROR",
-          message: err,
-        },
-      };
-    }
+    adminUtils.sendForgetPasswordEmail(
+      forgetPasswordToken,
+      admin,
+      req.protocol
+    );
     return res.status(200).json({ message: "Email sent" });
   } catch (error) {
     const errorHandler = new ErrorHandler(error.status, error.message);

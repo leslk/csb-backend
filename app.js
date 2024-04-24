@@ -6,6 +6,8 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 const adminRoutes = require("./routes/admin");
+const tournamentRoutes = require("./routes/tournament");
+const uploadRoutes = require("./routes/upload");
 // const protagonistRoutes = require("./routes/protagonist");
 // const universeRoutes = require("./routes/universe");
 // const messageRoutes = require("./routes/message");
@@ -25,9 +27,11 @@ app.use(
   })
 );
 
-// app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use("/api/admins", adminRoutes);
+app.use("/api/tournaments", tournamentRoutes);
+app.use("/api/upload", uploadRoutes);
 // app.use("/api/universes", universeRoutes);
 // app.use("/api/universes", protagonistRoutes);
 // app.use("/api/users", userRoutes);
