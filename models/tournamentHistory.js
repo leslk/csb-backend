@@ -1,36 +1,36 @@
-const ProxyDb = require('./config/connector/ProxyDB');
+const ProxyDb = require("../config/ProxyDB");
 
 class TournamentHistory {
-    constructor(content, images, _id) {
-        this.content = content;
-        this.images = images;
-        this._id = _id;
-    }
+  constructor(content, images, _id) {
+    this.content = content;
+    this.images = images;
+    this._id = _id;
+  }
 
-    static async getTournamentHistory(id) {
-        return await ProxyDb.loadObject(this, id);
-    }
+  static async getTournamentHistory(id) {
+    return await ProxyDb.loadObject(this, id);
+  }
 
-    static async updateTournamentHistory(tournamentHistory) {
-        return await ProxyDb.saveObject(this, tournamentHistory);
-    }
+  static async updateTournamentHistory(tournamentHistory) {
+    return await ProxyDb.saveObject(this, tournamentHistory);
+  }
 
-    static async createTournamentHistory(tournamentHistory) {
-        return await ProxyDb.saveObject(this, tournamentHistory);
-    }
+  static async createTournamentHistory(tournamentHistory) {
+    return await ProxyDb.saveObject(this, tournamentHistory);
+  }
 
-    async deleteTournamentHistory(id) {
-        return await ProxyDb.deleteObject(this, id);
-    }
+  async deleteTournamentHistory(id) {
+    return await ProxyDb.deleteObject(this, id);
+  }
 
-    toMap() {
-        return {
-            content: this.content,
-            images: this.images
-        }
-    }
+  toMap() {
+    return {
+      content: this.content,
+      images: this.images,
+    };
+  }
 
-    static fromMap(map) {
-        return new TournamentHistory(map.content, map.images, map._id);
-    }
+  static fromMap(map) {
+    return new TournamentHistory(map.content, map.images, map._id);
+  }
 }

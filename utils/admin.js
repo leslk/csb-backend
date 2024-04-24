@@ -126,6 +126,50 @@ async function sendInvitation(token, id, protocol) {
   }
 }
 
+async function sendForgetPasswordEmail(token, admin, protocol) {
+  const handlebarOptions = {
+    viewEngine: {
+      partialsDir: path.resolve("./views/"),
+      defaultLayout: false,
+    },
+    viewPath: path.resolve("./views/"),
+  };
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: { user: process.env.EMAIL, pass: process.env.PASSWORD },
+  });
+  const mailOptions = {
+    from: process.env.EMAIL,
+    to: admin.email,
+    subject: "Réinitialisation de mot de passe",
+    template: "forgetPasswordTemplate",
+    context: {
+      firstName: admin.firstName,
+      lastName: admin.lastName,
+      link: `${protocol}://${process.env.FRONT_HOST}/admin/forget-password/${admin._id}/${token}`,
+    },
+    attachments: [
+      {
+        filename: "csb_logo_letter.png",
+        path: logoPath,
+        cid: "Logo",
+      },
+    ],
+  };
+  transporter.use("compile", hbs(handlebarOptions));
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    throw {
+      status: 500,
+      message: {
+        error: "NODEMAILER_ERROR",
+        message: err,
+      },
+    };
+  }
+}
+
 module.exports = {
   userNameExists,
   emailExists,
@@ -137,4 +181,5 @@ module.exports = {
   decodedId,
   sendInvitation,
   decodedEmail,
+  sendForgetPasswordEmail,
 };
