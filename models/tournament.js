@@ -25,11 +25,8 @@ class Tournament {
   }
 
   async save() {
-    try {
-      return await ProxyDb.saveObject(TournamentSchema, this.toMap());
-    } catch (error) {
-      throw error;
-    }
+    console.log(this);
+    return await ProxyDb.saveObject(TournamentSchema, this.toMap());
   }
 
   async createTournament(tournament) {

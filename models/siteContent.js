@@ -1,36 +1,38 @@
-const ProxyDb = require('./config/connector/ProxyDB');
+const ProxyDb = require("../config/connector/ProxyDB");
+const SiteContentSchema = require("../schemas/siteContent");
 
 class SiteContent {
-    constructor(description, members, tournaments, contact, _id) {
-        this.description = description;
-        this.members = members;
-        this.tournaments = tournaments;
-        this.contact = contact;
-        this._id = _id;
-    }
+  constructor(aboutUs, members, contact, _id) {
+    this.aboutUs = aboutUs;
+    this.members = members;
+    this.contact = contact;
+    this._id = _id;
+  }
 
-    static async getSiteContent(id) {
-        return await ProxyDb.loadObject(this, id);
-    }
+  static async getSiteContent() {
+    return await ProxyDb.loadObjects(SiteContentSchema);
+  }
 
-    static async updateSiteContent(siteContent) {
-        return await ProxyDb.saveObject(this, siteContent);
-    }
+  async updateSiteContent() {
+    return await ProxyDb.saveObject(SiteContentSchema, this.toMap());
+  }
 
-    static async createSiteContent(siteContent) {
-        return await ProxyDb.saveObject(this, siteContent);
-    }
+  async save() {
+    return await ProxyDb.saveObject(SiteContentSchema, this.toMap());
+  }
 
-    toMap() {
-        return {
-            description: this.description,
-            members: this.members,
-            tournaments: this.tournaments,
-            contact: this.contact
-        }
-    }
+  toMap() {
+    return {
+      aboutUs: this.aboutUs,
+      members: this.members,
+      contact: this.contact,
+      _id: this._id,
+    };
+  }
 
-    static fromMap(map) {
-        return new SiteContent(map.description, map.members, map.tournaments, map.contact, map._id);
-    }
+  static fromMap(map) {
+    return new SiteContent(map.aboutUs, map.members, map.contact, map._id);
+  }
 }
+
+module.exports = SiteContent;

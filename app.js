@@ -1,18 +1,13 @@
 const express = require("express");
 require("dotenv").config({ path: "./config/.env" });
 const path = require("path");
-const auth = require("./middleware/auth");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 const adminRoutes = require("./routes/admin");
 const tournamentRoutes = require("./routes/tournament");
 const uploadRoutes = require("./routes/upload");
-// const protagonistRoutes = require("./routes/protagonist");
-// const universeRoutes = require("./routes/universe");
-// const messageRoutes = require("./routes/message");
-// const userRoutes = require("./routes/user");
-// const talkRoutes = require("./routes/talk");
+const siteContentRoutes = require("./routes/siteContent");
 
 const app = express();
 app.use(express.json());
@@ -32,10 +27,6 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/admins", adminRoutes);
 app.use("/api/tournaments", tournamentRoutes);
 app.use("/api/upload", uploadRoutes);
-// app.use("/api/universes", universeRoutes);
-// app.use("/api/universes", protagonistRoutes);
-// app.use("/api/users", userRoutes);
-// app.use("/api/talks", messageRoutes);
-// app.use("/api/talks", talkRoutes);
+app.use("/api/siteContent", siteContentRoutes);
 
 module.exports = app;
