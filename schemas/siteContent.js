@@ -1,7 +1,4 @@
 const mongoose = require("mongoose");
-const Member = require("./member");
-const Tournament = require("./tournament");
-const Content = require("./content");
 
 const contact = new mongoose.Schema({
   instagram: { type: String, required: true },
@@ -18,7 +15,7 @@ const member = new mongoose.Schema({
 });
 
 const siteContent = new mongoose.Schema({
-  description: { type: String, required: true },
+  aboutUs: { type: String, required: true },
   contact: { type: contact, required: false },
   members: { type: [member], required: false },
 });
