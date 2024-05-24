@@ -15,7 +15,9 @@ const participant = new mongoose.Schema({
 
 const tournament = new mongoose.Schema({
   startDate: { type: Date, required: true },
-  location: { type: String, required: true },
+  city: { type: String, required: true },
+  address: { type: String, required: true },
+  zipCode: { type: String, required: true },
   availablePlaces: { type: Number, required: true },
   participants: { type: [participant], required: true },
   price: { type: Number, required: true },
