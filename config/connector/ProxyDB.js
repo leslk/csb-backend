@@ -1,45 +1,57 @@
-const MongoDbConnector = require('./mongoDbConnector');
+const MongoDbConnector = require("./mongoDbConnector");
 
+/**
+ * ProxyDb class
+ * @description ProxyDb class
+ * @class ProxyDb
+ * @param {Object} db
+ */
 class ProxyDb {
-    db = null;
+  db = null;
 
-    getInstance() {
-        if (this.db === null) {
-            this.db = MongoDbConnector.getInstance();
-        }
-        return this.db;
+  // Singleton pattern
+  getInstance() {
+    if (this.db === null) {
+      this.db = MongoDbConnector.getInstance();
     }
-    
-    loadObjects(className, filter) {
-        this.getInstance();
-        return this.db.loadObjects(className, filter);
-    }
+    return this.db;
+  }
 
-    loadObject(className, id) {
-        this.getInstance();
-        return this.db.loadObject(className, id);
-    }
+  // load objects from the database
+  loadObjects(className, filter) {
+    this.getInstance();
+    return this.db.loadObjects(className, filter);
+  }
 
-    searchObject(schema, filter) {
-        this.getInstance();
-        return this.db.searchObject(schema, filter);
-    }
+  // load object from the database
+  loadObject(className, id) {
+    this.getInstance();
+    return this.db.loadObject(className, id);
+  }
 
-    saveObject(schema, object) {
-        this.getInstance();
-        return this.db.saveObject(schema, object);
-    }
+  // search object in the database
+  searchObject(schema, filter) {
+    this.getInstance();
+    return this.db.searchObject(schema, filter);
+  }
 
-    deleteObject(className, id) {
-        this.getInstance();
-        return this.db.deleteObject(className, id);
-    }
+  // save object in the database
+  saveObject(schema, object) {
+    this.getInstance();
+    return this.db.saveObject(schema, object);
+  }
 
-    insertObject(object) {
-        this.getInstance();
-        return this.db.insertObject(object);
-    }
+  // update object in the database
+  deleteObject(className, id) {
+    this.getInstance();
+    return this.db.deleteObject(className, id);
+  }
 
+  // insert object in the database
+  insertObject(object) {
+    this.getInstance();
+    return this.db.insertObject(object);
+  }
 }
 
 module.exports = new ProxyDb();
