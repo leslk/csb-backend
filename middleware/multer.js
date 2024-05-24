@@ -12,10 +12,10 @@ if (fs.existsSync(imagesDir)) {
     if (err) {
       return new ErrorHandler(
         500,
-        "Erreur lors de la création du dossier images"
+        "Error creating the images directory!"
       );
     }
-    console.log("Dossier images crée");
+    console.log("images directory created successfully!");
   });
 }
 

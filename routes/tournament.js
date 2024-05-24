@@ -6,6 +6,7 @@ const auth = require("../middleware/auth");
 
 router.post("/", auth, tournamentCtrl.createTournament);
 router.get("/", tournamentCtrl.getTournaments);
+router.get("/:id", tournamentCtrl.getTournament);
 router.put("/:id", auth, tournamentCtrl.updateTournament);
 router.put(
   "/:id/tournamentHistory",

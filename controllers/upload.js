@@ -1,6 +1,10 @@
 const ErrorHandler = require("../models/errorHandler");
 const fs = require("fs");
 
+/**
+ * @conteoller upload
+ * @description Upload an image
+ */
 exports.upload = async (req, res) => {
   try {
     // Check if there is a file in the request
@@ -19,6 +23,10 @@ exports.upload = async (req, res) => {
   }
 };
 
+/**
+ * @controller removeUploadedImage
+ * @description Remove an uploaded image 
+ */
 exports.removeUploadedImage = async (req, res) => {
   try {
     // Get the imageUrl from the request body

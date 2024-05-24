@@ -9,6 +9,12 @@ const hbs = require("nodemailer-express-handlebars");
 const path = require("path");
 const logoPath = path.join(__dirname, "../assets/csb_logo_letter.png");
 
+/**
+ * @function userNameExists
+ * @description Check if the username exists in the database
+ * @param {String} userName
+ * @returns {Boolean} true if the username exists, false otherwise
+ */
 async function userNameExists(userName) {
   const adminPseudoInDB = await Admin.findByUserName(userName);
   if (adminPseudoInDB) {
@@ -17,6 +23,12 @@ async function userNameExists(userName) {
   return false;
 }
 
+/** 
+ * @function emailExists
+ * @description Check if the email exists in the database
+ * @param {String} email
+ * @returns {Boolean} true if the email exists, false otherwise
+*/
 async function emailExists(email) {
   const adminEmailInDB = await Admin.findByEmail(email);
   if (adminEmailInDB) {
@@ -25,6 +37,13 @@ async function emailExists(email) {
   return false;
 }
 
+/**
+ * @function createToken
+ * @description Create a token
+ * @param {Object} admin
+ * @param {String} expiresIn
+ * @returns {String} token
+ */
 async function createToken(admin, expiresIn) {
   const token = jwt.sign(
     {
@@ -39,11 +58,23 @@ async function createToken(admin, expiresIn) {
   return token;
 }
 
+/**
+ * @function hashPassword
+ * @description Hash the password
+ * @param {String} password
+ * @returns {String} hashedPassword
+ */
 async function hashPassword(password) {
   const hashedPassword = await bcrypt.hash(password, 10);
   return hashedPassword;
 }
 
+/**
+ * @function isStrongPassword
+ * @description Check if the password is strong
+ * @param {String} password
+ * @returns {Boolean} true if the password is strong, false otherwise
+ */
 function isStrongPassword(password) {
   const passwordErrors = passwordSchema.validate(password, { list: true });
   if (passwordErrors.length > 0) {
@@ -52,10 +83,22 @@ function isStrongPassword(password) {
   return true;
 }
 
+/**
+ * @function emailIsValid
+ * @description Check if the email is valid
+ * @param {String} email
+ * @returns {Boolean} true if the email is valid, false otherwise
+ */
 function emailIsValid(email) {
   return emailRegex.test(email);
 }
 
+/**
+ * @function isSuperAdmin
+ * @description Check if the admin is a super admin
+ * @param {String} token
+ * @returns {Boolean} true if the admin is a super admin, false otherwise
+ */
 async function isSuperAdmin(token) {
   const id = decodedId(token);
   const admin = await Admin.findById(id);
@@ -66,6 +109,12 @@ async function isSuperAdmin(token) {
   }
 }
 
+/**
+ * @function decodedId
+ * @description Decode the id from the token
+ * @param {String} token
+ * @returns {String} id
+ */
 function decodedId(token) {
   const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET, {
     algorithm: "HS256",
@@ -73,6 +122,12 @@ function decodedId(token) {
   return decodedToken._id;
 }
 
+/**
+ * @function decodedEmail
+ * @description Decode the email from the token
+ * @param {String} token
+ * @returns {String} email 
+ */
 function decodedEmail(token) {
   const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET, {
     algorithm: "HS256",
@@ -80,7 +135,16 @@ function decodedEmail(token) {
   return decodedToken.email;
 }
 
+/**
+ * @function sendInvitation
+ * @description Send an invitation to create an account
+ * @param {String} token
+ * @param {String} id
+ * @param {String} protocol
+ * @throws {Object} error
+ */
 async function sendInvitation(token, id, protocol) {
+  // Update the create password token in the database
   const admin = await Admin.updateCreatePasswordToken(id, token);
   const handlebarOptions = {
     viewEngine: {
@@ -114,6 +178,7 @@ async function sendInvitation(token, id, protocol) {
   };
   transporter.use("compile", hbs(handlebarOptions));
   try {
+    // Send the email
     await transporter.sendMail(mailOptions);
   } catch (err) {
     throw {
@@ -126,6 +191,14 @@ async function sendInvitation(token, id, protocol) {
   }
 }
 
+/**
+ * @function sendForgetPasswordEmail
+ * @description Send an email to reset the password
+ * @param {String} token
+ * @param {Object} admin
+ * @param {String} protocol
+ * @throws {Object} error
+ */
 async function sendForgetPasswordEmail(token, admin, protocol) {
   const handlebarOptions = {
     viewEngine: {
@@ -158,6 +231,7 @@ async function sendForgetPasswordEmail(token, admin, protocol) {
   };
   transporter.use("compile", hbs(handlebarOptions));
   try {
+    // Send the email
     await transporter.sendMail(mailOptions);
   } catch (err) {
     throw {
