@@ -14,6 +14,7 @@ router.put(
   tournamentCtrl.updateTournamentHistory
 );
 router.put("/:id/participants", auth, tournamentCtrl.updateParticipants);
+router.put("/:id/user-participants", tournamentCtrl.updateParticipants);
 router.delete(
   "/:id/participants/:participantId",
   auth,
