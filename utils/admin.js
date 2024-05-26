@@ -166,7 +166,7 @@ async function sendInvitation(token, id, protocol) {
     context: {
       firstName: admin.firstName,
       lastName: admin.lastName,
-      link: `${protocol}://${process.env.FRONT_HOST}/admin/create-password/${id}/${token}`,
+      link: `${process.env.FRONT_HOST}/admin/create-password/${id}/${token}`,
     },
     attachments: [
       {
@@ -219,7 +219,7 @@ async function sendForgetPasswordEmail(token, admin, protocol) {
     context: {
       firstName: admin.firstName,
       lastName: admin.lastName,
-      link: `${protocol}://${process.env.FRONT_HOST}/admin/forget-password/${admin._id}/${token}`,
+      link: `${process.env.FRONT_HOST}/admin/forget-password/${admin._id}/${token}`,
     },
     attachments: [
       {
