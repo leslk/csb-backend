@@ -30,7 +30,7 @@ exports.sendEmail = async (req, res) => {
         const mailOptions = {
             from: process.env.EMAIL,
             to: req.body.email,
-            subject: "Modification de tournois Caen street Ball",
+            subject: "Demande de contact -  Caen street Ball",
             template: "contactUserTemplate",
             context: {
                 firstName: req.body.firstName,
@@ -70,8 +70,8 @@ exports.sendEmail = async (req, res) => {
         };
         const adminMailOptions = {
             from: process.env.EMAIL,
-            to: req.body.email,
-            subject: "Modification de tournois Caen street Ball",
+            to: process.env.EMAIL,
+            subject: "Demande de contact - Caen street Ball",
             template: "contactAdminTemplate",
             context: {
                 firstName: req.body.firstName,
