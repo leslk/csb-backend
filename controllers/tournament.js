@@ -158,7 +158,7 @@ exports.updateTournament = async (req, res) => {
     // Get the tournament by id
     const DBtournament = await Tournament.findById(req.params.id);
     // Check if start date is in the future
-    if (req.body.startDate) {
+    if (req.body.startDate && req.body.status === "open") {
       if (Date.now() > new Date(req.body.startDate)) {
         return new ErrorHandler(400, "Start date must be in the future").send(
           res
